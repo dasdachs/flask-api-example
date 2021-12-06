@@ -1,0 +1,38 @@
+version: "3.5"
+
+services:
+  postgres:
+    image: postgres:14.0
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: smatninja-forum
+    ports:
+      - "5432:5432"
+    volumes:
+      - smartninja-forum:/var/lib/postgresql/data
+    networks:
+      - smartninja-forum
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@smartnija-forum.com
+      PGADMIN_DEFAULT_PASSWORD: tempPassword1
+    volumes:
+      - smartninja-forum:/root/.pgadmin
+    ports:
+     - "5050:80"
+    networks:
+     - smartninja-forum
+  redis:
+    image: redis:5-bullseye
+    ports:
+      - "6379:6379"
+
+volumes:
+  smartninja-forum:
+
+networks:
+  smartninja-forum:

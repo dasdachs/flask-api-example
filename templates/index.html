@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue fetch</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body>
+    {% raw %}
+    <div id="app">
+        <div v-if="loading">
+            Loading...
+        </div>
+        <div v-if="posts">
+            <div v-for="post in posts">
+                <h2>{{ post.title }}</h2>
+                <p>{{ post.body }}</p>
+            </div>
+        </div>
+    </div>
+    {% endraw %}
+
+    <!-- development version, includes helpful console warnings -->
+    <script>
+        var app = new Vue({
+          el: '#app',
+          data: {
+            loading: true,
+            posts: []
+          },
+          created() {
+            this.fetchPosts();
+          },
+          methods: {
+            fetchPosts() {
+              fetch("/api/v1/posts")
+                .then(data => data.json())
+                .then(json => {
+                  this.posts = json;
+                  this.loading = false;
+                })
+                .catch(e => console.error(e))
+            }
+          }
+        })
+    </script>
+</body>
+</html>
